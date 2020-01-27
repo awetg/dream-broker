@@ -16,6 +16,22 @@ describe("POST /", () => {
     });
 });
 
+// testing with empty text
+describe("POST /", () => {
+    it("it shoud return text analyze and status code 200", done => {
+        supertest(app)
+            .post("/analyze")
+            .send({ "text": "" })
+            .expect(200)
+            .expect({"textLength":{"withSpaces":0,"withoutSpaces":0},"wordCount":0,"characterCount":[]})
+            .end((err, res) => {
+                if (err) done(err);
+                done();
+            });
+    });
+});
+
+
 // testing with invalid post request, client error
 describe("POST /", () => {
     it("it shoud return invalid request for unsupported input and status code 400", done => {
@@ -25,7 +41,7 @@ describe("POST /", () => {
             .expect(400)
             .expect({
                 error: {
-                    message: 'Invalid request. Please check yoU have valid request. Only (POST) json data of {"text":"your text"} is supported.'
+                    message: 'Invalid request. Please check you have valid request. Only (POST) json data of {"text":"your text"} is supported.'
                 }
             })
             .end((err, res) => {

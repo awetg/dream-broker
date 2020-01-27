@@ -7,9 +7,10 @@ app.use(express.json())
     .use(express.urlencoded({ extended: false }))
     .post('/analyze', (req, res) => {
         const text = req.body.text;
-        if (text && typeof text == 'string') {
-            // trim and split on one or more whitespace and take lenght
-            const wordCount = text.trim().split(/\s+/).length;
+        if (typeof text == 'string') {
+            // trim and split on one or more whitespace and take length
+            const words = text.trim().split(/\s+/);
+            const wordCount = words[0].length > 0 ? words.length : 0;
             // whole text length
             const textLengthWithSpace = text.length;
             // replace all whitespace and take length
@@ -31,7 +32,7 @@ app.use(express.json())
         } else {
             res.status(400).json({
                 error: {
-                    message: 'Invalid request. Please check yoU have valid request. Only (POST) json data of {"text":"your text"} is supported.'
+                    message: 'Invalid request. Please check you have valid request. Only (POST) json data of {"text":"your text"} is supported.'
                 }
             })
         }
